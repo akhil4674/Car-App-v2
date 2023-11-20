@@ -25,7 +25,7 @@ window.addEventListener('resize',showButton);
     <nav className="navbar">
         <div className="navbar-container">
         <Link to="/" classname="navbar-logo">
-            Maintainance Master <img src="./public/images/logo.png" alt="Logo"/>
+            Maintainance Master <img src={require("./logo.png")} alt="Logo"/>
         </Link>
         <div className='menu-icon' onClick={handleClick}>
             <i className={click ? "fas fa-times" : "fas fa-bars"}/>
