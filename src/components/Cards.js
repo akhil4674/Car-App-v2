@@ -39,7 +39,7 @@ function Cards() {
               src={require('./red.jpg')}
               text='Accessories highlights and offers'
               label='Accessories'
-              path='/sign-up'
+              path='/products'
             />
           </ul>
         </div>

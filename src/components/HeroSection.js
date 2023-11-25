@@ -2,6 +2,8 @@ import React from 'react';
 import '../App.css';
 import {Button} from './Button';
 import './HeroSection.css';
+import CarPartsLifespan from './CarPartsLifespan';
+
 
 
 
@@ -13,6 +15,7 @@ function HeroSection() {
     <p>What are you waiting for ?</p>
     <div className='hero-btns'>
         <Button
+         to="/CarPartsLifespan"
          className="btns"
          buttonStyle="btn--outline"
          buttonSize='btn--large'
