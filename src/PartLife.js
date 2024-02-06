@@ -90,17 +90,17 @@ const PartLife = () => {
             <h2>Estimated Part Life</h2>
             <ul>
               <li>
-                Air Filter: {partLife.airFilter} km
+                Air Filter: {partLife.airFilter.toFixed(2)} km
                 <ProgressBar progress={(partLife.airFilter / 15000) * 100} />
               </li>
 
               <li>
-                Engine Oil: {partLife.engineOil} km
+                Engine Oil: {partLife.engineOil.toFixed(2)} km
                 <ProgressBar progress={(partLife.engineOil / 5000) * 100} />
               </li>
 
               <li>
-                Brake Pads: {partLife.brakePads} km
+                Brake Pads: {partLife.brakePads.toFixed(2)} km
                 <ProgressBar progress={(partLife.brakePads / 30000) * 100} />
               </li>
             </ul>
