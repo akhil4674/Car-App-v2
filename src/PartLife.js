@@ -1,119 +1,122 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
+// Styled components for progress bars
+const ProgressBarContainer = styled.div`
+  background-color: #e0e0de;
+  border-radius: 2px;
+  margin: 5px;
+`;
+
 const ProgressBar = styled.div`
   background-color: ${(props) =>
     props.progress >= 20 ? '#00FF00' : '#FF0000'};
   width: ${(props) => props.progress}%;
+  padding: 5px;
+  border-radius: 2px;
+  transition: width 0.5s ease-in-out;
 `;
 
 const PartLife = () => {
-  const [carWeight, setCarWeight] = useState(0);
-  const [drivingTerrain, setDrivingTerrain] = useState('');
+  const [mileage, setMileage] = useState('');
+  const [temperature, setTemperature] = useState('');
+  const [drivingStyle, setDrivingStyle] = useState('');
   const [partLife, setPartLife] = useState({
     airFilter: 0,
     engineOil: 0,
     brakePads: 0,
   });
 
-  const calculatePartLife = (e) => {
-    e.preventDefault(); // Prevent the default form submission behavior
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    let airFilterLife = 15000;
-    let engineOilLife = 5000;
-    let brakePadsLife = 30000;
+    try {
+      const response = await fetch('http://127.0.0.1:5000/predict', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          mileage: parseFloat(mileage),
+          temperature: parseFloat(temperature),
+          driving_style: drivingStyle,
+        }),
+      });
 
-    if (drivingTerrain === 'Offroad') {
-      airFilterLife *= 0.75;
-      engineOilLife *= 0.6;
-      brakePadsLife *= 0.5;
-    } else if (drivingTerrain === 'Mixed') {
-      airFilterLife *= 0.85;
-      engineOilLife *= 0.7;
-      brakePadsLife *= 0.6;
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setPartLife({
+        airFilter: data['Air Filter Life KM'], // Adjust the keys based on your actual Flask API response
+        engineOil: data['Engine Oil Life KM'],
+        brakePads: data['Brake Pads Life KM'],
+      });
+    } catch (error) {
+      console.error("There was an error with the prediction:", error);
     }
-
-    if (carWeight > 2000) {
-      airFilterLife *= 0.9;
-      engineOilLife *= 0.8;
-      brakePadsLife *= 0.7;
-    }
-
-    // Update the state with the calculated values
-    setPartLife({
-      airFilter: airFilterLife,
-      engineOil: engineOilLife,
-      brakePads: brakePadsLife,
-    });
-
-    // Reset input values to 0
-    setCarWeight(0);
-    setDrivingTerrain('');
   };
 
-  const render = () => {
-    return (
-      <div className="PartLife">
-        <header>
-          <h1>Car Spare Part Life Calculator</h1>
-        </header>
-        <main>
-          <div className="user-input" style={{ padding: '10px' }}>
-            <h2>User Input</h2>
-            <form onSubmit={calculatePartLife}>
-              <label>Car Weight (kg):</label>
-              <input
-                type="number"
-                value={carWeight}
-                onChange={(event) => setCarWeight(event.target.value)}
-              />
-              <br />
-
-              <label>Driving Terrain:</label>
-              <select
-                value={drivingTerrain}
-                onChange={(event) => setDrivingTerrain(event.target.value)}
-              >
-                <option value="">Select Terrain</option>
-                <option value="Highway">Highway</option>
-                <option value="City">City</option>
-                <option value="Mixed">Mixed</option>
-                <option value="Offroad">Offroad</option>
-              </select>
-              <br />
-
-              <button type="submit">Calculate Part Life</button>
-            </form>
-          </div>
-
-          <div className="results" style={{ padding: '10px' }}>
-            <h2>Estimated Part Life</h2>
-            <ul>
-              <li>
-                Air Filter: {partLife.airFilter.toFixed(2)} km
-                <ProgressBar progress={(partLife.airFilter / 15000) * 100} />
-              </li>
-
-              <li>
-                Engine Oil: {partLife.engineOil.toFixed(2)} km
-                <ProgressBar progress={(partLife.engineOil / 5000) * 100} />
-              </li>
-
-              <li>
-                Brake Pads: {partLife.brakePads.toFixed(2)} km
-                <ProgressBar progress={(partLife.brakePads / 30000) * 100} />
-              </li>
-            </ul>
-          </div>
-        </main>
-        <footer>
-          <p>&copy; 2023 Car Spare Part Life Calculator</p>
-        </footer>
+  return (
+    <div className="PartLife">
+      <h1>Car Part Life Prediction</h1>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Mileage:
+          <input
+            type="number"
+            value={mileage}
+            onChange={(e) => setMileage(e.target.value)}
+            placeholder="Enter car mileage"
+          />
+        </label>
+        <label>
+          Temperature:
+          <input
+            type="number"
+            value={temperature}
+            onChange={(e) => setTemperature(e.target.value)}
+            placeholder="Enter current temperature"
+          />
+        </label>
+        <label>
+          Driving Style:
+          <select
+            value={drivingStyle}
+            onChange={(e) => setDrivingStyle(e.target.value)}
+          >
+            <option value="">Select Driving Style</option>
+            <option value="aggressive">Aggressive</option>
+            <option value="moderate">Moderate</option>
+            <option value="conservative">Conservative</option>
+          </select>
+        </label>
+        <button type="submit">Predict Part Life</button>
+      </form>
+      <div>
+        <h2>Estimated Part Life</h2>
+        <div>
+          Air Filter Life: {partLife.airFilter} km
+          <ProgressBarContainer>
+            <ProgressBar progress={(partLife.airFilter / 15000) * 100} />
+          </ProgressBarContainer>
+        </div>
+        <div>
+          Engine Oil Life: {partLife.engineOil} km
+          <ProgressBarContainer>
+            <ProgressBar progress={(partLife.engineOil / 5000) * 100} />
+          </ProgressBarContainer>
+        </div>
+        <div>
+          Brake Pads Life: {partLife.brakePads} km
+          <ProgressBarContainer>
+            <ProgressBar progress={(partLife.brakePads / 30000) * 100} />
+          </ProgressBarContainer>
+        </div>
       </div>
-    );
-  };
-
-  return render();
+    </div>
+  );
 };
 
 export default PartLife;

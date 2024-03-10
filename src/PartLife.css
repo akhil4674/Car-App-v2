@@ -1,90 +1,75 @@
 .PartLife {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  height: 100vh;
+  justify-content: center; /* Centers the content vertically */
+  align-items: center; /* Centers the content horizontally */
+  padding: 2rem;
+  gap: 1rem; /* Adds space between child elements */
 }
 
 .PartLife header,
 .PartLife footer {
-  background-color: #fff;
-  padding: 20px;
+  background-color: #004085; /* A nice dark blue background */
+  color: #ffffff; /* White text color */
+  padding: 1rem;
+  width: 100%;
   text-align: center;
 }
 
 .PartLife .card {
-  padding: 20px;
-  border: 2px solid black;
-  border-radius: 10px;
-  margin: 10px;
+  background-color: #ffffff; /* White background for the card */
+  padding: 2rem;
+  border: none; /* No border */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* A subtle shadow */
+  border-radius: 10px; /* Rounded corners */
+  margin: 1rem;
+  width: 80%; /* Card width */
+  max-width: 500px; /* Maximum width */
 }
 
 .PartLife .card h2 {
-  padding: 10px 0;
+  padding: 1rem 0;
+  color: #004085; /* Dark blue text for the titles */
 }
 
 .PartLife .card form {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  gap: 1rem; /* Adds space between form elements */
+  width: 100%; /* Form width */
 }
 
-.PartLife .card label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-.PartLife .card select {
-  width: 100%;
-  padding: 5px;
+.PartLife .card input,
+.PartLife .card select,
+.PartLife .card button {
+  padding: 0.5rem;
+  border: 1px solid #ced4da; /* A light gray border */
+  border-radius: 0.25rem; /* Slightly rounded borders for inputs and button */
+  width: 100%; /* Full width */
 }
 
 .PartLife .card button {
-  padding: 5px 10px;
+  background-color: #007bff; /* Bootstrap primary color for the button */
+  color: white;
+  font-weight: bold;
   cursor: pointer;
+  border: none;
+}
+
+.PartLife .card .ProgressBarContainer {
+  background-color: #e9ecef; /* Light gray background for progress bar */
+  border-radius: 0.25rem; /* Slightly rounded borders for progress bar */
 }
 
 .PartLife .card .ProgressBar {
-  background-color: green;
-  height: 10px;
-  width: 100%;
+  background-color: #28a745; /* Bootstrap success color for the progress fill */
+  height: 20px; /* Fixed height for the progress bar */
+  transition: width 0.5s ease; /* Smooth transition for the progress bar fill */
 }
 
-
-/* Add this CSS to your stylesheet or component */
-.ProgressBarContainer {
-  width: 100%;
-  height: 20px;
-  background-color: #ddd;
-  border-radius: 10px; /* Adjust the border-radius for rounded corners */
-  overflow: hidden; /* Ensure the rounded corners are applied to the progress bar */
+/* Adjust the media query based on your design needs */
+@media (max-width: 768px) {
+  .PartLife {
+    width: 95%; /* Smaller width on mobile */
+  }
 }
-
-.ProgressBarFill {
-  height: 100%;
-  background-color: #00FF00;
-  width: 0;
-  transition: width 1s ease; /* Add an animation effect */
-}
-
-/* Adjust the colors based on your design */
-.ProgressBarContainer.progress-20 .ProgressBarFill {
-  background-color: #FF0000;
-}
-
-.ProgressBarContainer.progress-40 .ProgressBarFill {
-  background-color: #FF6600;
-}
-
-.ProgressBarContainer.progress-60 .ProgressBarFill {
-  background-color: #FFCC00;
-}
-
-.ProgressBarContainer.progress-80 .ProgressBarFill {
-  background-color: #99FF33;
-}
-
-.ProgressBarContainer.progress-100 .ProgressBarFill {
-  background-color: #00FF00;
-}
-
