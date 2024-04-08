@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../../App.css";
+import "/Users/akhilkumar/Desktop/Py/car_app/src/PartLife.css";
 
 export default function Services() {
   const [formData, setFormData] = useState({
